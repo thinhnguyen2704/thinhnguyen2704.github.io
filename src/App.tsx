@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import './App.css'
+import analogClock1 from './clockFaces/analogClock1.jpg'
 
-function App() {
+export default function App() {
+  const [clockTime, setClockTime] = useState(new Date())
+
+  useEffect(() => {   
+    let clockInterval = setInterval(() => {
+      setClockTime(new Date())
+    }, 1000)
+    return () => {
+      clearInterval(clockInterval)
+    }
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <div className='analogClock'>
+        <img src={analogClock1} alt='Analog Clock' width={200} height={200} />
+        <div className='hands hourHand' style={{transform: `rotate(${parseInt(new Date().getHours().toString()) * 30}deg)`}} />
+        <div className='hands minuteHand' style={{transform: `rotate(${parseInt(new Date().getMinutes().toString()) * 6}deg)`}} />
+        <div className='hands secondHand' style={{transform: `rotate(${parseInt(new Date().getSeconds().toString()) * 6}deg)`}} />
+      </div>
+      <div className='digitalClock'>{clockTime.toLocaleTimeString()}</div>
     </div>
-  );
+  )
 }
-
-export default App;
